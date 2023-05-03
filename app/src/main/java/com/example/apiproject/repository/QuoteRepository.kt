@@ -14,7 +14,7 @@ class QuoteRepository {
      fun getQuote(context: Context): Quote? {
         try{
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://animechan.vercel.app/api")
+                .baseUrl("https://animechan.vercel.app/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
@@ -36,6 +36,7 @@ class QuoteRepository {
                             character = quote?.character, quote = quote?.quote
                         )
                         db.quoteDao().insertAll(dbQuote)
+                        return quote
                     }else
                         return Quote()
 
