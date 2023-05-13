@@ -1,4 +1,4 @@
-package com.example.apiproject.ui
+package com.example.apiproject.ui.main
 
 import android.content.Context
 import androidx.lifecycle.LiveData
@@ -20,11 +20,17 @@ class MainViewModel @Inject constructor() : ViewModel() {
     val currentQuote: LiveData<Quote>
         get() = _currentQuote
 
+    private val _waitNewQuote = MutableLiveData(false)
+    val waitNewQuote: LiveData<Boolean>
+        get() = _waitNewQuote
+
     fun getNewQuote(context: Context){
         val scope = CoroutineScope(Job() + Dispatchers.IO)
         scope.launch {
+            _waitNewQuote.postValue(true)
             val quote = QuoteRepository().getQuote(context)
             _currentQuote.postValue(quote)
+            _waitNewQuote.postValue(false)
         }.start()
     }
 
