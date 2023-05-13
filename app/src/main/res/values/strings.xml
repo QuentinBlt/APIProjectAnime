@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">API Project</string>
 
-    <!-- Main activity -->
-    <string name="main_title_text">Title</string>
-    <string name="main_character_text">Character</string>
-    <string name="main_newquote_button">New quote</string>
+    <!-- labels -->
+    <string name="title_text">Title</string>
+    <string name="character_text">Character</string>
+    <string name="newquote_button">New quote</string>
 
 
 </resources>

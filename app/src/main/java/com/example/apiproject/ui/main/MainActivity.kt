@@ -1,6 +1,7 @@
 package com.example.apiproject.ui.main
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -40,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.apiproject.R
 import com.example.apiproject.data.Quote
+import com.example.apiproject.ui.history.HistoryActivity
 import com.example.apiproject.ui.theme.APIProjectTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -69,7 +71,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun onHistoryButtonClick(){
-
+        startActivity(Intent(this, HistoryActivity::class.java))
     }
 }
 
@@ -108,15 +110,17 @@ fun Quote(quote: Quote, waitNewQuote: Boolean, onRefreshClick: () -> Unit) {
         )
         Spacer(modifier = Modifier.height(15.dp))
         Text(
-            text = "${stringResource(id = R.string.main_title_text)} : ${quote.anime ?: String()}",
+            text = "${stringResource(id = R.string.title_text)} : ${quote.anime ?: String()}",
             style = MaterialTheme.typography.bodyLarge
         )
         Text(
-            text = "${stringResource(id = R.string.main_character_text)} : ${quote.character ?: String()}",
+            text = "${stringResource(id = R.string.character_text)} : ${quote.character ?: String()}",
             style = MaterialTheme.typography.bodyLarge
         )
         Spacer(modifier = Modifier.height(45.dp))
-        Button(onClick = { onRefreshClick.invoke() }) {
+        Button(
+            onClick = { onRefreshClick.invoke() },
+            enabled = !waitNewQuote) {
             Box(
                 modifier = Modifier
                     .wrapContentWidth()
@@ -141,7 +145,7 @@ fun Quote(quote: Quote, waitNewQuote: Boolean, onRefreshClick: () -> Unit) {
                         Spacer(modifier = Modifier.width(10.dp))
                     }
                     Text(
-                        text = stringResource(id = R.string.main_newquote_button),
+                        text = stringResource(id = R.string.newquote_button),
                         textAlign = TextAlign.Center,
                         fontSize = 20.sp,
                     )

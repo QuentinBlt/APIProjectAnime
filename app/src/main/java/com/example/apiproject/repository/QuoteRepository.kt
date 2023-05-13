@@ -11,8 +11,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 class QuoteRepository {
-     fun getQuote(context: Context): Quote? {
-        try{
+    fun getQuote(context: Context): Quote? {
+        try {
             val retrofit = Retrofit.Builder()
                 .baseUrl("https://animechan.vercel.app/api/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -22,14 +22,14 @@ class QuoteRepository {
             val call = service.randomQuote()
             val response = call?.execute()
             if (response != null) {
-                if(response.isSuccessful){
+                if (response.isSuccessful) {
 
                     val db = Room.databaseBuilder(
                         context,
                         AppDatabase::class.java, "database-quotes"
                     ).build()
 
-                    if(response.body() != null) {
+                    if (response.body() != null) {
                         val quote = response.body()
                         val dbQuote = DBQuote(
                             anime = quote?.anime,
@@ -37,18 +37,35 @@ class QuoteRepository {
                         )
                         db.quoteDao().insertAll(dbQuote)
                         return quote
-                    }else
+                    } else
                         return Quote()
 
-                }else{
+                } else {
                     return Quote()
                 }
             }
 
-            return Quote(anime = "My Hero Acedemia", character = "All Might", quote = "La cavalerie est la !!!")
+            return Quote(
+                anime = String(),
+                character = String(),
+                quote = String()
+            )
 
-        }catch (ex: Exception){
+        } catch (ex: Exception) {
             return null
+        }
+    }
+
+    fun getQuoteHistory(context: Context): List<DBQuote> {
+        return try {
+            val db = Room.databaseBuilder(
+                context,
+                AppDatabase::class.java, "database-quotes"
+            ).build()
+
+            db.quoteDao().getAllQuotesByDesc()
+        } catch (ex: Exception) {
+            emptyList()
         }
     }
 }
